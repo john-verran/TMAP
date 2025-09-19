@@ -149,7 +149,7 @@ char __attribute__((aligned(128))) alignmentForce[128];    // Following consts d
 const __m128i NegInfiniteSIMD16 = _mm_set1_epi16(-INFINITE16);
 const __m128i TwiceInfinitesSIMD16 = _mm_set1_epi16(INFINITE16 * 2);
 //const __m128i negInfiniteSIMDShiftedBig16 = _mm_srli_si128(negInfiniteSIMD16, SIMDBIGSHIFT16);    // Should be this but it triggers a bug in old GCC
-const char __attribute__((aligned (16))) NegInfiniteSIMDShiftedBigData16[16] = {0x68, 0xC5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+const char __attribute__((aligned (16))) NegInfiniteSIMDShiftedBigData16[16] = {static_cast<char>(0x68), static_cast<char>(0xC5), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 const short int* NegInfiniteSIMDShiftedBigDataShort16 = ((short int*)(NegInfiniteSIMDShiftedBigData16));
 const __m128i NegInfiniteSIMDShiftedBig16 = *((__m128i*)(NegInfiniteSIMDShiftedBigData16));
 
@@ -166,7 +166,7 @@ Solution9::~Solution9() {
 int GetVariant(int queryStartClip, int queryEndClip) {
     return (4 - (queryEndClip << 1) - queryStartClip);
 }
-    
+
 template<bool DIRECTION>
 void inline Solution9::CheckOpt8(const unsigned char m, const int i, const int j) {
     assert(Opt >= 0 && Opt < 255);
@@ -192,7 +192,7 @@ void inline Solution9::CheckOpt8(const unsigned char m, const int i, const int j
 
 
 template<bool DIRECTION>
-void inline Solution9::CheckOpt16(const short int m, const int i, const int j) {            
+void inline Solution9::CheckOpt16(const short int m, const int i, const int j) {
     if(j > 0 && j <= TargetSize) {
         if(m > Opt) {
             Opt = m;
@@ -234,7 +234,7 @@ void Solution9::ExtractOpts8(const __m128i newM, const int ltMask, const int i, 
         if(ltMask & 0x2000) CheckOpt8<DIRECTION>(_mm_extract_epi16(newM, 6) >> 8,   i, jStart + 13);
         if(ltMask & 0x4000) CheckOpt8<DIRECTION>(_mm_extract_epi16(newM, 7) & 0xFF, i, jStart + 14);
         if(ltMask & 0x8000) CheckOpt8<DIRECTION>(_mm_extract_epi16(newM, 7) >> 8,   i, jStart + 15);
-    }    
+    }
 }
 
 template<bool DIRECTION>
@@ -250,7 +250,7 @@ void Solution9::ExtractOpts16(const __m128i newM, const int ltMask, const int i,
         if(!(ltMask & 0x0400)) CheckOpt16<DIRECTION>(_mm_extract_epi16(newM, 5), i, jStart + 5);
         if(!(ltMask & 0x1000)) CheckOpt16<DIRECTION>(_mm_extract_epi16(newM, 6), i, jStart + 6);
         if(!(ltMask & 0x4000)) CheckOpt16<DIRECTION>(_mm_extract_epi16(newM, 7), i, jStart + 7);
-    }    
+    }
 }
 
 
@@ -365,7 +365,7 @@ template<int VARIANT, bool DIRECTION, bool DETECTREDUNDANT> void Solution9::DoVa
 
             __m128i thisV2 = _mm_load_si128(V[(i - 1) & 0x1] + jInnerBlock + 1);
             __m128i thisH2 = _mm_load_si128(H[(i - 1) & 0x1] + jInnerBlock + 1);
-            __m128i thisM2 = _mm_load_si128(M[(i - 1) & 0x1] + jInnerBlock  + 1);                
+            __m128i thisM2 = _mm_load_si128(M[(i - 1) & 0x1] + jInnerBlock  + 1);
             __m128i mx2 = _mm_max_epu8(thisV2, thisH2);
             mx2 = _mm_max_epu8(mx2, thisM2);
             __m128i matchesSubMismatchScore2 = _mm_load_si128(targetLookupCurrent + jInnerBlock + 1);
@@ -717,7 +717,7 @@ template<int VARIANT, bool DIRECTION, bool DETECTREDUNDANT> void Solution9::DoVa
 
             __m128i thisV2 = _mm_load_si128(V[(i - 1) & 0x1] + jInnerBlock + 1);
             __m128i thisH2 = _mm_load_si128(H[(i - 1) & 0x1] + jInnerBlock + 1);
-            __m128i thisM2 = _mm_load_si128(M[(i - 1) & 0x1] + jInnerBlock  + 1);                
+            __m128i thisM2 = _mm_load_si128(M[(i - 1) & 0x1] + jInnerBlock  + 1);
             __m128i mx2 = _mm_max_epi16(thisV2, thisH2);
             mx2 = _mm_max_epi16(mx2, thisM2);
             __m128i matches2 = _mm_load_si128(targetLookupCurrent + jInnerBlock + 1);
@@ -785,7 +785,7 @@ template<int VARIANT, bool DIRECTION, bool DETECTREDUNDANT> void Solution9::DoVa
             __m128i newM = _mm_load_si128(M[i & 0x1] + jThirdBlock);
             __m128i newMPlusOE = _mm_add_epi16(newM, twiceInfinitesPlusOESIMD);
             __m128i newM2 = _mm_load_si128(M[i & 0x1] + jThirdBlock + 1);
-            __m128i newMPlusOE2 = _mm_add_epi16(newM2, twiceInfinitesPlusOESIMD);    
+            __m128i newMPlusOE2 = _mm_add_epi16(newM2, twiceInfinitesPlusOESIMD);
 
             int ltMask, ltMask2;
             if(VARIANT == 1 || VARIANT == 2) {
@@ -1097,7 +1097,7 @@ int Solution9::process(const string& target, const string& query, int queryStart
     string resultString(resultBuffer, sprintf(resultBuffer, "%i %i %i %i", Opt, QueryEnd, TargetEnd, NBest));
     return resultString;
     */
-    
+
     (*_opt) = Opt;
     (*_te) = TargetEnd;
     (*_qe) = QueryEnd;

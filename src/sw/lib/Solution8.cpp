@@ -1,5 +1,5 @@
 // Coder: venco
-// Submission: 13 
+// Submission: 13
 // URL: http://community.topcoder.com/longcontest/?module=ViewProblemSolution&pm=11786&rd=15078&cr=274023&subnum=13
 
 #define SUBMISSION 12/66+
@@ -26,9 +26,9 @@
 #include <sstream>
 //#include <strstream>
 #include <sys/time.h>
-#include <ext/hash_set>
-#include <ext/hash_map>
-#include <ext/pool_allocator.h>
+#include <unordered_set>
+#include <unordered_map>
+// #include <ext/pool_allocator.h> // Removed - not available in modern C++
 #include <emmintrin.h>
 #include <pmmintrin.h>
 #include <stdint.h>
@@ -179,7 +179,7 @@ void process0(int n, int m, int qsc, int ,
             M[i][j] = max(0, mx + (a[i-1] == b[j-1] ? mm : mi));
         }
   }
-  else {                                      
+  else {
       for (int j=0; j <= n; j++) M[0][j] = 0;
       for (int i=1; i <= m; i++) M[i][0] = -INF;
       for (int j=0; j <= n; j++) H[0][j] = V[0][j] = -INF;
