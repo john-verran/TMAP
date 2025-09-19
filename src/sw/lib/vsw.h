@@ -62,12 +62,12 @@
 #define __vsw16_mm_cmpgt_epi16(_a, _b) _mm_cmpgt_epi16(_a, _b)
 #define __vsw16_mm_insert_epi16(_a, _b, _imm) _mm_insert_epi16(_a, _b, _imm)
 #define __vsw16_mm_extract_epi16(_a, _imm) _mm_extract_epi16(_a, _imm)
-#define vsw16_values_per_128_bits 8 
+#define vsw16_values_per_128_bits 8
 #define vsw16_values_per_128_bits_log2 3 // should be log2(values_per_128_bits)
 #define vsw16_max_value INT16_MAX
 #define vsw16_mid_value ((vsw16_max_value >> 1)-1)
-#define vsw16_min_value INT16_MIN 
-#define vsw16_shift_bytes 2 
+#define vsw16_min_value INT16_MIN
+#define vsw16_shift_bytes 2
 //typedef uint16_t vsw16_uint_t;
 typedef int16_t vsw16_int_t;
 // returns the number of stripes required given the query length
@@ -78,14 +78,14 @@ typedef int16_t vsw16_int_t;
     (xx) = _mm_max_epi16((xx), _mm_srli_si128((xx), 4)); \
     (xx) = _mm_max_epi16((xx), _mm_srli_si128((xx), 2)); \
     (ret) = (vsw16_int_t)(__vsw16_mm_extract_epi16((xx), 0) & 0xffff); \
-} while (0) 
+} while (0)
 // returns the minimum value in stored in the vector
 #define __vsw16_min(ret, xx) do { \
     (xx) = _mm_min_epi16((xx), _mm_srli_si128((xx), 8)); \
     (xx) = _mm_min_epi16((xx), _mm_srli_si128((xx), 4)); \
     (xx) = _mm_min_epi16((xx), _mm_srli_si128((xx), 2)); \
     (ret) = (vsw16_int_t)(__vsw16_mm_extract_epi16((xx), 0) & 0xffff); \
-} while (0) 
+} while (0)
 // Inserts a value into the given location in the vector.  This overcomes the immediate problem when compiling.
 #define __vsw16_mm_insert(_a, _val, _k) \
   (0 == _k ? __vsw16_mm_insert_epi16(_a, _val, 0) : \
@@ -111,7 +111,7 @@ typedef int16_t vsw16_int_t;
 // returns the amount of memory the stripes will occupy  (align the memory by 16 bytes)
 #define __vsw_calc_qlen_mem(_slen) __vsw_16((_slen) << 4) // divide by 16, since there 16 bytes per 128
 // zero-based query index to zero-based stripe #
-#define __vsw_query_index_to_stripe_number(_q, _slen) ((_q) & _slen) 
+#define __vsw_query_index_to_stripe_number(_q, _slen) ((_q) & _slen)
 // zero-based query index to zero-based bit #
 #define __vsw_query_index_to_byte_number(_q, _slen) (((int32_t)(_q)) / _slen)
 
@@ -119,8 +119,8 @@ typedef int16_t vsw16_int_t;
   The parameter and memory for the vectorized alignment.
  */
 typedef struct {
-    uint8_t query_start_clip:2; /*!< 1 if we are to clip the start of the query, 0 otherwise */ 
-    uint8_t query_end_clip:2;  /*!< 1 if we are to clip the end of the query, 0 otherwise */ 
+    uint8_t query_start_clip:2; /*!< 1 if we are to clip the start of the query, 0 otherwise */
+    uint8_t query_end_clip:2;  /*!< 1 if we are to clip the end of the query, 0 otherwise */
     uint16_t qlen; /*!< the query length */
     uint16_t tlen; /*!< the target length */
     int32_t slen; /*!< the number of stripes needed */
@@ -181,7 +181,7 @@ vsw_opt_t*
 vsw_opt_init(int32_t score_match, int32_t pen_mm, int32_t pen_gapo, int32_t pen_gape, int32_t score_thr);
 
 /*!
-  @param  opt  the parameters to destroy 
+  @param  opt  the parameters to destroy
  */
 void
 vsw_opt_destroy(vsw_opt_t *opt);
@@ -218,10 +218,10 @@ vsw_query_destroy(vsw_query_t *query);
   @param  opt               the alignment parameters
   @param  score_fwd         the alignment score for the forward smith waterman
   @param  score_rev         the alignment score for the reverse smith waterman
-  @param  query_start       the query start position in the alignment (0-based) 
-  @param  query_end         the query end position in the alignment (0-based) 
-  @param  target_start      the target start position in the alignment (0-based) 
-  @param  target_end        the target end position in the alignment (0-based) 
+  @param  query_start       the query start position in the alignment (0-based)
+  @param  query_end         the query end position in the alignment (0-based)
+  @param  target_start      the target start position in the alignment (0-based)
+  @param  target_end        the target end position in the alignment (0-based)
   @param  overflow          returns 1 if overflow occurs, 0 otherwise
   @param  n_best            the number of bset scoring alignments found
   @param  score_thr         the minimum scoring threshold (inclusive)
@@ -233,7 +233,7 @@ vsw_sse2(vsw_query_t *vsw_query,
               const uint8_t *query, int32_t qlen,
               uint8_t *target, int32_t tlen,
               int32_t query_start_clip, int32_t query_end_clip,
-              vsw_opt_t *opt, 
+              vsw_opt_t *opt,
               int16_t *score_fwd, int16_t *score_rev,
               int16_t *query_start, int16_t *query_end,
               int16_t *target_start, int16_t *target_end,

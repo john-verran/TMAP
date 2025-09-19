@@ -60,12 +60,12 @@
 #define __tmap_vsw16_mm_cmpgt_epi16(_a, _b) _mm_cmpgt_epi16(_a, _b)
 #define __tmap_vsw16_mm_insert_epi16(_a, _b, _imm) _mm_insert_epi16(_a, _b, _imm)
 #define __tmap_vsw16_mm_extract_epi16(_a, _imm) _mm_extract_epi16(_a, _imm)
-#define tmap_vsw16_values_per_128_bits 8 
+#define tmap_vsw16_values_per_128_bits 8
 #define tmap_vsw16_values_per_128_bits_log2 3 // should be log2(values_per_128_bits)
 #define tmap_vsw16_max_value INT16_MAX
 #define tmap_vsw16_mid_value ((tmap_vsw16_max_value >> 1)-1)
-#define tmap_vsw16_min_value INT16_MIN 
-#define tmap_vsw16_shift_bytes 2 
+#define tmap_vsw16_min_value INT16_MIN
+#define tmap_vsw16_shift_bytes 2
 //typedef uint16_t tmap_vsw16_uint_t;
 typedef int16_t tmap_vsw16_int_t;
 // returns the number of stripes required given the query length
@@ -76,14 +76,14 @@ typedef int16_t tmap_vsw16_int_t;
     (xx) = _mm_max_epi16((xx), _mm_srli_si128((xx), 4)); \
     (xx) = _mm_max_epi16((xx), _mm_srli_si128((xx), 2)); \
     (ret) = (tmap_vsw16_int_t)(__tmap_vsw16_mm_extract_epi16((xx), 0) & 0xffff); \
-} while (0) 
+} while (0)
 // returns the minimum value in stored in the vector
 #define __tmap_vsw16_min(ret, xx) do { \
     (xx) = _mm_min_epi16((xx), _mm_srli_si128((xx), 8)); \
     (xx) = _mm_min_epi16((xx), _mm_srli_si128((xx), 4)); \
     (xx) = _mm_min_epi16((xx), _mm_srli_si128((xx), 2)); \
     (ret) = (tmap_vsw16_int_t)(__tmap_vsw16_mm_extract_epi16((xx), 0) & 0xffff); \
-} while (0) 
+} while (0)
 // Inserts a value into the given location in the vector.  This overcomes the immediate problem when compiling.
 #define __tmap_vsw16_mm_insert(_a, _val, _k) \
   (0 == _k ? __tmap_vsw16_mm_insert_epi16(_a, _val, 0) : \
@@ -131,7 +131,7 @@ tmap_vsw_opt_t*
 tmap_vsw_opt_init(int32_t score_match, int32_t pen_mm, int32_t pen_gapo, int32_t pen_gape, int32_t score_thr);
 
 /*!
-  @param  opt  the parameters to destroy 
+  @param  opt  the parameters to destroy
  */
 void
 tmap_vsw_opt_destroy(tmap_vsw_opt_t *opt);

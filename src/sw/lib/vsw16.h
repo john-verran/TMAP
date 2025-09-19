@@ -55,7 +55,7 @@
   @return                   the query sequence in vectorized form
   */
 vsw16_query_t *
-vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen, 
+vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
                               int32_t query_start_clip, int32_t query_end_clip,
                               vsw_opt_t *opt);
 
@@ -72,8 +72,8 @@ vsw16_query_destroy(vsw16_query_t *vsw);
   @param  query_start_clip  1 if we are to clip the start of the query, 0 otherwise
   @param  query_end_clip    1 if we are to clip the end of the query, 0 otherwise
   @param  opt               the alignment parameters
-  @param  query_end         the query end position in the alignment (0-based) 
-  @param  target_end        the target end position in the alignment (0-based) 
+  @param  query_end         the query end position in the alignment (0-based)
+  @param  target_end        the target end position in the alignment (0-based)
   @param  direction         1 if we are performing forward alignment, 0 otherwise
   @param  overflow          returns 1 if overflow occurs, 0 otherwise
   @param  n_best            the number of bset scoring alignments found

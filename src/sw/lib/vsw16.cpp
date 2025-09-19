@@ -36,7 +36,7 @@
 // TODO: remove query profile so it does not need to be filled in each time
 
 vsw16_query_t *
-vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen, 
+vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
                  int32_t query_start_clip, int32_t query_end_clip,
                  vsw_opt_t *opt)
 {
@@ -45,10 +45,10 @@ vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
   vsw16_int_t *t;
 
   // get the number of stripes
-  slen = __vsw16_calc_slen(qlen); 
+  slen = __vsw16_calc_slen(qlen);
 
   // check if we need to re-size the memory
-  if(NULL == prev 
+  if(NULL == prev
      || prev->qlen_max < qlen
      || query_start_clip != prev->query_start_clip
      || query_end_clip != prev->query_end_clip) { // recompute
@@ -56,11 +56,11 @@ vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
       if(NULL != prev) {
           free(prev); prev = NULL;
       }
-      // get the memory needed to hold the stripes for the query 
+      // get the memory needed to hold the stripes for the query
       qlen_mem = __vsw_calc_qlen_mem(slen);
       //prev = memalign(16, sizeof(vsw16_query_t) + 15 + qlen_mem * (VSW_ALPHABET_SIZE + 3), "prev"); // add three for H0, H1, and E
       prev = (vsw16_query_t*)malloc(sizeof(vsw16_query_t) + 15 + qlen_mem * (VSW_ALPHABET_SIZE + 3)); // add three for H0, H1, and E
-      prev->qlen_max = qlen; 
+      prev->qlen_max = qlen;
       // update the memory
       prev->qlen_mem = qlen_mem;
       // update clipping
@@ -82,8 +82,8 @@ vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
   // max aln score
   prev->max_aln_score = vsw16_max_value - prev->max_edit_score; // so it doesn't overflow
   // normalize
-  prev->zero_aln_score = vsw16_min_value - prev->min_aln_score- prev->zero_aln_score; 
-  prev->min_aln_score = vsw16_min_value - prev->min_aln_score; 
+  prev->zero_aln_score = vsw16_min_value - prev->min_aln_score- prev->zero_aln_score;
+  prev->min_aln_score = vsw16_min_value - prev->min_aln_score;
   // normalize with the minimum alignment score
   /*
      fprintf(stderr, "min_edit_score=%d\n", prev->min_edit_score);
@@ -97,7 +97,7 @@ vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
   prev->slen = slen; // update the number of stripes
 
   // NB: align all the memory from one block
-  prev->query_profile = (__m128i*)__vsw_16((size_t)prev + sizeof(vsw16_query_t)); // skip over the struct variables, align memory 
+  prev->query_profile = (__m128i*)__vsw_16((size_t)prev + sizeof(vsw16_query_t)); // skip over the struct variables, align memory
   prev->H0 = prev->query_profile + (prev->slen * VSW_ALPHABET_SIZE); // skip over the query profile
   prev->H1 = prev->H0 + prev->slen; // skip over H0
   prev->E = prev->H1 + prev->slen; // skip over H1
@@ -110,7 +110,7 @@ vsw16_query_init(vsw16_query_t *prev, const uint8_t *query, int32_t qlen,
           // fill in this stripe
           for(k = i; k < prev->slen << vsw16_values_per_128_bits_log2; k += prev->slen) { //  for q_{i+1}, q_{2i+1}, ..., q_{2s+1}
               // NB: pad with zeros
-              *t++ = ((k >= qlen) ? prev->min_edit_score : ((a == query[k]) ? opt->score_match : -opt->pen_mm)); 
+              *t++ = ((k >= qlen) ? prev->min_edit_score : ((a == query[k]) ? opt->score_match : -opt->pen_mm));
           }
       }
   }
@@ -151,7 +151,7 @@ vsw16_sse2_dir_cmp(int32_t cur_score, int32_t cur_qe, int32_t cur_te,
 }
 
 int32_t
-vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen, 
+vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
                    int32_t query_start_clip, int32_t query_end_clip,
                    vsw_opt_t *opt, int16_t *query_end, int16_t *target_end,
                    int32_t direction, int32_t *overflow, int32_t *n_best, int32_t score_thr)
@@ -182,9 +182,9 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
   if(NULL != n_best) (*n_best) = 0;
   reduce_mm = __vsw16_mm_set1_epi16(vsw16_mid_value);
   // vectors
-  H0 = query->H0; 
-  H1 = query->H1; 
-  E = query->E; 
+  H0 = query->H0;
+  H1 = query->H1;
+  E = query->E;
   slen = query->slen;
   if(NULL != overflow) *overflow = 0;
 #ifdef VSW_DEBUG
@@ -194,20 +194,20 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
 #endif
 
   // select query end only
-  // check stripe #: __vsw16_query_index_to_stripe_number(query->qlen, slen) 
+  // check stripe #: __vsw16_query_index_to_stripe_number(query->qlen, slen)
   // check byte # __vsw16_query_index_to_byte_number(query->qlen, slen)
 
   if(0 == query_start_clip) {
       __m128i f;
       // Set start
       for(j = 0; j < slen; j++) {
-          // initialize E to negative infinity 
+          // initialize E to negative infinity
           __vsw_mm_store_si128(E + j, negative_infinity_mm); // E(0,j)
       }
       // NB: setting the start == 0 will be done later
-      // set the leading insertions 
+      // set the leading insertions
       f = __vsw16_mm_set1_epi16(query->min_aln_score);
-      f = __vsw16_mm_insert_epi16(f, zero, 0); 
+      f = __vsw16_mm_insert_epi16(f, zero, 0);
       for(j = 0; j < vsw16_values_per_128_bits; ++j) {
           f = __vsw16_mm_insert(f , -opt->pen_gapo + -opt->pen_gape + (-opt->pen_gape * slen * j) + zero, j);
       }
@@ -234,7 +234,7 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
       S = query->query_profile + target[i] * slen; // s is the 1st score vector
 
       // load H(i-1,-1)
-      h = __vsw_mm_load_si128(H0 + slen - 1); // the last stripe, which holds the j-1 
+      h = __vsw_mm_load_si128(H0 + slen - 1); // the last stripe, which holds the j-1
       if(UNLIKELY(0 < i)) { // only if we have previous results
           h = __vsw_mm_slli_si128(h, vsw16_shift_bytes); // shift left since x64 is little endian
       }
@@ -246,7 +246,7 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
       f = __vsw16_mm_set1_epi16(query->min_aln_score);
       // leading insertions
       g = __vsw16_mm_set1_epi16(query->min_aln_score);
-      if(0 == query_start_clip) { 
+      if(0 == query_start_clip) {
           g = __vsw16_mm_set1_epi16(query->min_aln_score);
           g = __vsw16_mm_insert_epi16(g, -opt->pen_gapo + opt->pen_gape + zero, 0);
           for(j = 1; LIKELY(j < vsw16_values_per_128_bits); j++) {
@@ -257,7 +257,7 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
       }
 
       for(j = 0; LIKELY(j < slen); ++j) { // for each stripe in the query
-          // NB: at the beginning, 
+          // NB: at the beginning,
           // h=H(i-1,j-1)
           // e=E(i,j)
           // f=F(i,j)
@@ -268,15 +268,15 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
            */
           if(1 == query_start_clip) {
               // start anywhere within the query, though not before the start
-              h = __vsw16_mm_max_epi16(h, zero_start_mm);  
+              h = __vsw16_mm_max_epi16(h, zero_start_mm);
           }
           else {
               g = __vsw16_mm_subs_epi16(g, pen_gape); // leading insertion
-#ifdef VSW_DEBUG 
+#ifdef VSW_DEBUG
               /*
                  fprintf(stderr, "h i=%d j=%d", i, j);
                  for(k = 0; k < vsw16_values_per_128_bits; k++) { // for each start position in the stripe
-                 fprintf(stderr, " (%d,%d)", 
+                 fprintf(stderr, " (%d,%d)",
                  ((vsw16_int_t*)(&h))[k] - zero,
                  ((vsw16_int_t*)(&g))[k] - zero);
                  }
@@ -285,8 +285,8 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
 #endif
               h = __vsw16_mm_max_epi16(h, g);
           }
-          // compute H(i,j); 
-#ifdef VSW_DEBUG 
+          // compute H(i,j);
+#ifdef VSW_DEBUG
           /*
              __m128i s = __vsw_mm_load_si128(S + j);
              fprintf(stderr, "s i=%d j=%d", i, j);
@@ -331,11 +331,11 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
       for(k = 0; LIKELY(k < vsw16_values_per_128_bits); ++k) { // this block mimics SWPS3; NB: H(i,j) updated in the lazy-F loop cannot exceed max
           f = __vsw_mm_slli_si128(f, vsw16_shift_bytes); // since x86 is little endian
           f = __vsw16_mm_insert_epi16(f, query->min_aln_score, 0); // set F(i-1,-1)[0] as negative infinity (normalized)
-          for(j = 0; LIKELY(j < slen); ++j) { 
+          for(j = 0; LIKELY(j < slen); ++j) {
               h = __vsw_mm_load_si128(H1 + j); // h=H(i,j)
               h = __vsw16_mm_max_epi16(h, f); // h=H(i,j) = max{H(i,j), F(i,j)}
               h = __vsw16_mm_max_epi16(h, negative_infinity_mm); // bound with -inf
-              __vsw_mm_store_si128(H1 + j, h); // save h to H(i,j) 
+              __vsw_mm_store_si128(H1 + j, h); // save h to H(i,j)
               h = __vsw16_mm_subs_epi16(h, pen_gapoe); // h=H(i,j)-gapo
               f = __vsw16_mm_subs_epi16(f, pen_gape); // f=F(i,j)-pen_gape
               f = __vsw16_mm_max_epi16(f, negative_infinity_mm); // bound with -inf
@@ -348,7 +348,7 @@ vsw16_sse2_forward(vsw16_query_t *query, const uint8_t *target, int32_t tlen,
           }
       }
 end_loop:
-#ifdef VSW_DEBUG 
+#ifdef VSW_DEBUG
       fprintf(stderr, "H1 i=%d target[i]=%d", i, target[i]);
       for(k = l = 0; k < vsw16_values_per_128_bits; k++) { // for each start position in the stripe
           for(j = 0; j < slen; j++, l++) {
@@ -362,8 +362,8 @@ end_loop:
           if(NULL != overflow) *overflow = 1;
           return vsw16_min_value;
       }
-      if(imax > gmax) { 
-          gmax = imax; // global maximum score 
+      if(imax > gmax) {
+          gmax = imax; // global maximum score
       }
       if(score_thr <= imax && best <= imax) { // potential best score
           vsw16_int_t *t;
@@ -373,7 +373,7 @@ end_loop:
               j = (query->qlen-1) % slen; // stripe
               k = (query->qlen-1) / slen; // byte
               t = (vsw16_int_t*)(H1 + j);
-#ifdef VSW_DEBUG 
+#ifdef VSW_DEBUG
               fprintf(stderr, "j=%d k=%d slen=%d qlen=%d best=%d pot=%d\n", j, k, slen, query->qlen, best-zero, t[k]-zero);
 #endif
               if(NULL != n_best) {
@@ -388,7 +388,7 @@ end_loop:
                   (*query_end) = query->qlen-1;
                   (*target_end) = i;
                   best = t[k];
-#ifdef VSW_DEBUG 
+#ifdef VSW_DEBUG
                   fprintf(stderr, "FOUND A i=%d query->qlen-1=%d query_end=%d target_end=%d best=%d\n", i, query->qlen-1, *query_end, *target_end, best-zero);
 #endif
               }
@@ -417,7 +417,7 @@ end_loop:
                           best = *t;
                           (*query_end) = cur_qe;
                           (*target_end) = i;
-#ifdef VSW_DEBUG 
+#ifdef VSW_DEBUG
                           fprintf(stderr, "FOUND B j=%d k=%d query_end=%d best=%d\n", j, k, *query_end, best-zero);
 #endif
                       }
@@ -439,7 +439,7 @@ end_loop:
           }
           // When overflow is going to happen, subtract vsw16_mid_value from all scores. This heuristic
           // may miss the best alignment, but in practice this should happen very rarely.
-          sum += vsw16_mid_value; 
+          sum += vsw16_mid_value;
           if(query->min_aln_score + vsw16_mid_value < gmax) gmax -= vsw16_mid_value;
           else gmax = query->min_aln_score;
           for(j = 0; LIKELY(j < slen); ++j) {

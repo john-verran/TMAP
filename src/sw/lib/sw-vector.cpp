@@ -312,7 +312,7 @@ sw_vector(uint8_t *target, int32_t target_len,
   if (a_gap_open == b_gap_open && a_gap_ext == b_gap_ext) {
       score = vect_sw_same_gap(&db[0], target_len, &qr[7], query_len,
                                &db_ls[0], 0, false);
-  } else { 
+  } else {
       score = vect_sw_diff_gap(&db[0], target_len, &qr[7], query_len,
                                &db_ls[0], 0, false);
   }

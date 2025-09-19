@@ -39,7 +39,7 @@ vsw_opt_init(int32_t score_match, int32_t pen_mm, int32_t pen_gapo, int32_t pen_
   vsw_opt_t *opt;
 
   opt = (vsw_opt_t*)malloc(sizeof(vsw_opt_t));
-  opt->score_match = score_match; 
+  opt->score_match = score_match;
   opt->pen_mm = pen_mm;
   opt->pen_gapo = pen_gapo;
   opt->pen_gape = pen_gape;

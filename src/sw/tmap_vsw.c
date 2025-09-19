@@ -67,7 +67,7 @@ tmap_vsw_destroy(tmap_vsw_t *vsw)
 static void
 tmap_vsw_process_compare(tmap_vsw_t *vsw,
                          const uint8_t *query, int32_t qlen,
-                         uint8_t *target, int32_t tlen, 
+                         uint8_t *target, int32_t tlen,
                          tmap_vsw_result_t *result,
                          int32_t *overflow, int32_t score_thr, int32_t dir)
 {
@@ -81,14 +81,14 @@ tmap_vsw_process_compare(tmap_vsw_t *vsw,
   // baseline
   if(0 == cmp_non_vsw) {
       tmap_vsw_wrapper_process(vsw->algorithm_default,
-                               target, tlen, 
-                               query, qlen, 
+                               target, tlen,
+                               query, qlen,
                                vsw->opt->score_match,
                                -vsw->opt->pen_mm,
                                -vsw->opt->pen_gapo,
                                -vsw->opt->pen_gape,
-                               dir, 
-                               vsw->query_start_clip, vsw->query_end_clip, 
+                               dir,
+                               vsw->query_start_clip, vsw->query_end_clip,
                                &score_type0, &target_end_type0, &query_end_type0, &n_best_type0);
   }
   else {
@@ -97,29 +97,29 @@ tmap_vsw_process_compare(tmap_vsw_t *vsw,
       int32_t path_len;
       int32_t i, matrix[25];
       ap.matrix=matrix;
-      for(i=0;i<25;i++) { 
-          ap.matrix[i] = -(vsw->opt)->pen_mm; 
-      } 
-      for(i=0;i<4;i++) { 
-          ap.matrix[i*5+i] = vsw->opt->score_match; 
-      } 
-      ap.gap_open = vsw->opt->pen_gapo; ap.gap_ext = vsw->opt->pen_gape; 
-      ap.gap_end = vsw->opt->pen_gape; 
-      ap.row = 5; 
+      for(i=0;i<25;i++) {
+          ap.matrix[i] = -(vsw->opt)->pen_mm;
+      }
+      for(i=0;i<4;i++) {
+          ap.matrix[i*5+i] = vsw->opt->score_match;
+      }
+      ap.gap_open = vsw->opt->pen_gapo; ap.gap_ext = vsw->opt->pen_gape;
+      ap.gap_end = vsw->opt->pen_gape;
+      ap.row = 5;
       score_type0 = tmap_sw_clipping_core((uint8_t*)target, tlen, (uint8_t*)query, qlen, &ap,
-                                    vsw->query_start_clip, vsw->query_end_clip, 
+                                    vsw->query_start_clip, vsw->query_end_clip,
                                     path, &path_len, dir);
   }
   // current
   tmap_vsw_wrapper_process(vsw->algorithm,
-                           target, tlen, 
-                           query, qlen, 
+                           target, tlen,
+                           query, qlen,
                            vsw->opt->score_match,
                            -vsw->opt->pen_mm,
                            -vsw->opt->pen_gapo,
                            -vsw->opt->pen_gape,
-                           dir, 
-                           vsw->query_start_clip, vsw->query_end_clip, 
+                           dir,
+                           vsw->query_start_clip, vsw->query_end_clip,
                            &score_type1, &target_end_type1, &query_end_type1, &n_best_type1);
 
   if(0 != cmp_non_vsw) {
@@ -164,19 +164,19 @@ tmap_vsw_process_compare(tmap_vsw_t *vsw,
           int32_t i, matrix[25], n_cigar, score, path_len;
           uint32_t *cigar = NULL;
           ap.matrix=matrix;
-          for(i=0;i<25;i++) { 
-              ap.matrix[i] = -(vsw->opt)->pen_mm; 
-          } 
-          for(i=0;i<4;i++) { 
-              ap.matrix[i*5+i] = vsw->opt->score_match; 
-          } 
-          ap.gap_open = vsw->opt->pen_gapo; ap.gap_ext = vsw->opt->pen_gape; 
-          ap.gap_end = vsw->opt->pen_gape; 
-          ap.row = 5; 
+          for(i=0;i<25;i++) {
+              ap.matrix[i] = -(vsw->opt)->pen_mm;
+          }
+          for(i=0;i<4;i++) {
+              ap.matrix[i*5+i] = vsw->opt->score_match;
+          }
+          ap.gap_open = vsw->opt->pen_gapo; ap.gap_ext = vsw->opt->pen_gape;
+          ap.gap_end = vsw->opt->pen_gape;
+          ap.row = 5;
           path_len = 0;
           path = tmap_calloc(1024, sizeof(tmap_sw_path_t), "path");
           score = tmap_sw_clipping_core((uint8_t*)target, tlen, (uint8_t*)query, qlen, &ap,
-                                        vsw->query_start_clip, vsw->query_end_clip, 
+                                        vsw->query_start_clip, vsw->query_end_clip,
                                         path, &path_len, dir);
           // print out the path
           cigar = tmap_sw_path2cigar(path, path_len, &n_cigar);
@@ -191,14 +191,14 @@ tmap_vsw_process_compare(tmap_vsw_t *vsw,
       // try the opposite direction
       // baseline
       tmap_vsw_wrapper_process(vsw->algorithm_default,
-                               target, tlen, 
-                               query, qlen, 
+                               target, tlen,
+                               query, qlen,
                                vsw->opt->score_match,
                                -vsw->opt->pen_mm,
                                -vsw->opt->pen_gapo,
                                -vsw->opt->pen_gape,
-                               1-dir, 
-                               vsw->query_start_clip, vsw->query_end_clip, 
+                               1-dir,
+                               vsw->query_start_clip, vsw->query_end_clip,
                                &score_type0, &target_end_type0, &query_end_type0, &n_best_type0);
       fprintf(stderr, "baseline opposite reverse tlen=%d qlen=%d score=[%d,%d] target_end=[%d,%d] query_end=[%d,%d] n_best=[%d,%d]\n",
               tlen, qlen,
@@ -212,7 +212,7 @@ tmap_vsw_process_compare(tmap_vsw_t *vsw,
       for(i=0;i<qlen;i++) fputc("ACGTN"[query[i]], stderr);
       fputc('\t', stderr);
       fprintf(stderr, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-              vsw->query_start_clip, vsw->query_end_clip, 
+              vsw->query_start_clip, vsw->query_end_clip,
               vsw->opt->score_match,
               -vsw->opt->pen_mm,
               -vsw->opt->pen_gapo,
@@ -228,9 +228,9 @@ tmap_vsw_process_compare(tmap_vsw_t *vsw,
 static int32_t
 tmap_vsw_process(tmap_vsw_t *vsw,
               const uint8_t *query, int32_t qlen,
-              uint8_t *target, int32_t tlen, 
+              uint8_t *target, int32_t tlen,
               tmap_vsw_result_t *result,
-              int32_t *overflow, int32_t score_thr, 
+              int32_t *overflow, int32_t score_thr,
               int32_t is_rev, int32_t direction)
 {
   int32_t found_forward = 1, query_end, target_end, n_best, score = INT32_MIN;
@@ -266,19 +266,19 @@ tmap_vsw_process(tmap_vsw_t *vsw,
   if(tlen <= tmap_vsw_wrapper_get_max_tlen(vsw->algorithm)
      && qlen <= tmap_vsw_wrapper_get_max_qlen(vsw->algorithm)) {
       tmap_vsw_wrapper_process(vsw->algorithm,
-                               target, tlen, 
-                               query, qlen, 
+                               target, tlen,
+                               query, qlen,
                                vsw->opt->score_match,
                                -vsw->opt->pen_mm,
                                -vsw->opt->pen_gapo,
                                -vsw->opt->pen_gape,
-                               direction, 
-                               vsw->query_start_clip, vsw->query_end_clip, 
+                               direction,
+                               vsw->query_start_clip, vsw->query_end_clip,
                                &score, &target_end, &query_end, &n_best);
 #ifdef TMAP_VSW_DEBUG_CMP
       tmap_vsw_process_compare(vsw,
                                query, qlen,
-                               target, tlen, 
+                               target, tlen,
                                result,
                                overflow, score_thr, direction);
 #endif
@@ -286,14 +286,14 @@ tmap_vsw_process(tmap_vsw_t *vsw,
   else { // try the default
       if(1 != vsw->type) {
           tmap_vsw_wrapper_process(vsw->algorithm_default,
-                                   target, tlen, 
-                                   query, qlen, 
+                                   target, tlen,
+                                   query, qlen,
                                    vsw->opt->score_match,
                                    -vsw->opt->pen_mm,
                                    -vsw->opt->pen_gapo,
                                    -vsw->opt->pen_gape,
-                                   direction, 
-                                   vsw->query_start_clip, vsw->query_end_clip, 
+                                   direction,
+                                   vsw->query_start_clip, vsw->query_end_clip,
                                    &score, &target_end, &query_end, &n_best);
       }
   }
@@ -302,7 +302,7 @@ tmap_vsw_process(tmap_vsw_t *vsw,
       n_best = 0;
       score = INT32_MIN;
   }
-  
+
   if(0 == is_rev) {
 
       result->query_end = query_end;
@@ -368,20 +368,20 @@ tmap_vsw_process(tmap_vsw_t *vsw,
           result->target_end = result->target_start = 0;
           result->score_fwd = result->score_rev = INT16_MIN;
           result->n_best = 0;
-          return INT32_MIN; 
+          return INT32_MIN;
       }
       else if(result->score_fwd != result->score_rev) { // something went wrong... FIXME
           // use the default
           if(1 != vsw->type) {
               tmap_vsw_wrapper_process(vsw->algorithm_default,
-                                       target, tlen, 
-                                       query, qlen, 
+                                       target, tlen,
+                                       query, qlen,
                                        vsw->opt->score_match,
                                        -vsw->opt->pen_mm,
                                        -vsw->opt->pen_gapo,
                                        -vsw->opt->pen_gape,
-                                       direction, 
-                                       vsw->query_start_clip, vsw->query_end_clip, 
+                                       direction,
+                                       vsw->query_start_clip, vsw->query_end_clip,
                                        &score, &target_end, &query_end, &n_best);
               result->query_start = qlen - query_end - 1;
               result->target_start = tlen - target_end - 1;
@@ -409,17 +409,17 @@ tmap_vsw_process(tmap_vsw_t *vsw,
           tmap_sw_param_t ap;
           int32_t i, matrix[25];
           ap.matrix=matrix;
-          for(i=0;i<25;i++) { 
-              ap.matrix[i] = -(vsw->opt)->pen_mm; 
-          } 
-          for(i=0;i<4;i++) { 
-              ap.matrix[i*5+i] = vsw->opt->score_match; 
-          } 
-          ap.gap_open = vsw->opt->pen_gapo; ap.gap_ext = vsw->opt->pen_gape; 
-          ap.gap_end = vsw->opt->pen_gape; 
-          ap.row = 5; 
+          for(i=0;i<25;i++) {
+              ap.matrix[i] = -(vsw->opt)->pen_mm;
+          }
+          for(i=0;i<4;i++) {
+              ap.matrix[i*5+i] = vsw->opt->score_match;
+          }
+          ap.gap_open = vsw->opt->pen_gapo; ap.gap_ext = vsw->opt->pen_gape;
+          ap.gap_end = vsw->opt->pen_gape;
+          ap.row = 5;
           score = tmap_sw_clipping_core((uint8_t*)target, tlen, (uint8_t*)query, qlen, &ap,
-                                        vsw->query_start_clip, vsw->query_end_clip, 
+                                        vsw->query_start_clip, vsw->query_end_clip,
                                         NULL, NULL, direction);
           fprintf(stderr, "score=%d\n", score);
           tmap_bug();
@@ -432,7 +432,7 @@ tmap_vsw_process(tmap_vsw_t *vsw,
 int32_t
 tmap_vsw_process_fwd(tmap_vsw_t *vsw,
               const uint8_t *query, int32_t qlen,
-              uint8_t *target, int32_t tlen, 
+              uint8_t *target, int32_t tlen,
               tmap_vsw_result_t *result,
               int32_t *overflow, int32_t score_thr, int32_t direction)
 {
@@ -442,7 +442,7 @@ tmap_vsw_process_fwd(tmap_vsw_t *vsw,
 int32_t
 tmap_vsw_process_rev(tmap_vsw_t *vsw,
               const uint8_t *query, int32_t qlen,
-              uint8_t *target, int32_t tlen, 
+              uint8_t *target, int32_t tlen,
               tmap_vsw_result_t *result,
               int32_t *overflow, int32_t score_thr, int32_t direction)
 {

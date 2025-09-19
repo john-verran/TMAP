@@ -91,10 +91,10 @@ INLINE int16_t Solution4::findMax16(const __m128i &mMax) {
 
 INLINE int16_t Solution4::findMax16Simple(const __m128i &mMax) {
     __m128i m = mMax;
-    m = _mm_max_epi16(m, _mm_srli_si128(m, 8)); 
-    m = _mm_max_epi16(m, _mm_srli_si128(m, 4)); 
-    m = _mm_max_epi16(m, _mm_srli_si128(m, 2)); 
-    return (int16_t)(_mm_extract_epi16(m, 0) & 0xffff); 
+    m = _mm_max_epi16(m, _mm_srli_si128(m, 8));
+    m = _mm_max_epi16(m, _mm_srli_si128(m, 4));
+    m = _mm_max_epi16(m, _mm_srli_si128(m, 2));
+    return (int16_t)(_mm_extract_epi16(m, 0) & 0xffff);
     /*
     int16_t* p = (int16_t*)&mMax;
     int16_t mx = p[0];
@@ -105,7 +105,7 @@ INLINE int16_t Solution4::findMax16Simple(const __m128i &mMax) {
     mx = max(mx, p[5]);
     mx = max(mx, p[6]);
     mx = max(mx, p[7]);
-    return mx;    
+    return mx;
     */
 }
 
@@ -114,7 +114,7 @@ INLINE int16_t Solution4::findMax16Simple(const __m128i &mMax) {
    __m128i mshift = _mm_srli_si128(mMax, 1);
    __m128i m = _mm_max_epu8(mshift, mMax);
    uint8_t* p = (uint8_t*)&m;
-   return max(max(max(p[0], p[2]), max(p[4], p[6])), max(max(p[8], p[10]), max(p[12], p[14])));    
+   return max(max(max(p[0], p[2]), max(p[4], p[6])), max(max(p[8], p[10]), max(p[12], p[14])));
    }
    */
 
@@ -128,7 +128,7 @@ INLINE uint8_t Solution4::findMax8(const __m128i &mMax) {
     mx = max(mx, p[4]);
     mx = max(mx, p[8]);
     mx = max(mx, p[12]);
-    return mx;    
+    return mx;
 }
 
 /*
@@ -205,7 +205,7 @@ int Solution4::resize(int a, int b) {
         HTDATA_l = MAX_DIMA;
 #ifdef USE_HASHING
         free(HTDATA); HTDATA = NULL;
-        HTDATA = (qres_t*)tmap_malloc((HTDATA_l + 64) * sizeof(qres_t), "HTDATA"); 
+        HTDATA = (qres_t*)tmap_malloc((HTDATA_l + 64) * sizeof(qres_t), "HTDATA");
         for(int i=0;i<HTDATA_l;i++) {
             HTDATA[i].hash = -1;
         }
@@ -219,14 +219,14 @@ Solution4::Solution4() {
     mem = NULL;
     BUFFER = NULL;
     HTDATA = NULL;
-    // Initial dimentions 
+    // Initial dimentions
     MAX_DIMA = MAX_DIMB = 0;
     /*
     MAX_DIMA = 512;
-    MAX_DIMB = 1024; 
+    MAX_DIMB = 1024;
     */
     HTDATA_l = MAX_DIMA;
-    // memory 
+    // memory
     /*
     BUFFER = (int16_t*)tmap_malloc((MAX_DIMB + 64) * 9 * sizeof(int16_t), "BUFFER");
     HTDATA_l = 0x4000; // 2^14
@@ -317,7 +317,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantB16BitA(const stri
     REP(i, segNo) V[i] = minf;
 
     REP(i, m) {
-        __m128i mmin;            
+        __m128i mmin;
         if (qec) {
             mmin = _mm_set1_epi16(max(max(lastMax, opt) - (m - i) * mm, o + e + e * i));
         } else {
@@ -332,7 +332,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantB16BitA(const stri
         __m128i mH = _mm_set1_epi16(o + e + e * i);
 
         __m128i mMax;
-        if (qec) 
+        if (qec)
           mMax = _mm_setzero_si128();
 
         __m128i *P = XP[(int)a[i]];
@@ -410,7 +410,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantB16BitB(const stri
 
     int midstep = qec ? m : m * 4 / 5;
     REP(i, midstep) {
-        __m128i mmin;            
+        __m128i mmin;
         if (qec) {
             mmin = _mm_set1_epi16(max(max(lastMax, opt) - (m - i) * mm, o + e + e * i));
         } else {
@@ -425,7 +425,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantB16BitB(const stri
         __m128i mH = _mm_set1_epi16(o + e + e * i);
 
         __m128i mMax;
-        if (qec) 
+        if (qec)
           mMax = _mm_setzero_si128();
 
         __m128i *P = XP[(int)a[i]];
@@ -488,7 +488,7 @@ outB12:
 
     if (!qec) {
         FOR(i, midstep, m) {
-            __m128i mmin;            
+            __m128i mmin;
             if (qec) {
                 mmin = _mm_set1_epi16(max(max(lastMax, opt) - (m - i) * mm, o + e + e * i));
             } else {
@@ -503,7 +503,7 @@ outB12:
             __m128i mH = _mm_set1_epi16(o + e + e * i);
 
             __m128i mMax;
-            //if (qec) 
+            //if (qec)
             mMax = _mm_setzero_si128();
 
             __m128i *P = XP[(int)a[i]];
@@ -599,7 +599,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantA16Bit(const strin
 
         __m128i *P = XP[(int)a[i]];
         __m128i mMax;
-        if (qec) 
+        if (qec)
           mMax = mmin;
 
         REP(j, segNo) {
@@ -607,7 +607,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantA16Bit(const strin
 
             mM = _mm_adds_epi16(mM, P[j]);
 
-            if (qec) 
+            if (qec)
               mMax = _mm_max_epi16(mMax, mM);
 
             mM = _mm_max_epi16(mM, mH);
@@ -637,7 +637,7 @@ template <int qec> NOINLINE void Solution4::processFastVariantA16Bit(const strin
                 mM = _mm_load_si128(&M1[j]);
 
                 __m128i mtmp = _mm_adds_epi16(mM, mo);
-                if (qec) 
+                if (qec)
                   mtmp = _mm_max_epi16(mtmp, mco);
                 __m128i mcmp = _mm_cmpgt_epi16(mH, mtmp);
                 if (_mm_movemask_epi8(mcmp) == 0) goto outA16;
@@ -785,7 +785,7 @@ outA81:
     if (!qec) {
         FOR(i, midstep, m) {
             __m128i mco;
-            if (qec) 
+            if (qec)
               mco = _mm_set1_epi8(max(max(lastMax, opt) - (m - i) * mm, 0));
             else
               mco = _mm_set1_epi8(max(max(lastMax, opt) - (m - i) * (mm - e) + o, 0));
@@ -833,7 +833,7 @@ outA81:
 
                     __m128i mtmp = _mm_subs_epu8(mM, mo);
                     mtmp = _mm_adds_epu8(mtmp, m1);
-                    //if (qec) 
+                    //if (qec)
                     mtmp = _mm_max_epu8(mtmp, mco);
                     mtmp = _mm_max_epu8(mtmp, mH);
                     __m128i mcmp = _mm_cmpeq_epi8(mH, mtmp);
@@ -1029,7 +1029,7 @@ NOINLINE void Solution4::preprocess16Bit(const string &b, int qsc, int mm, int m
         }
       }
 
-    calcInvalidPos<int16_t*, 8>(mi);        
+    calcInvalidPos<int16_t*, 8>(mi);
 }
 
 void Solution4::preprocess8Bit(const string &b, int qsc, int mm, int mi) {
@@ -1080,7 +1080,7 @@ void Solution4::preprocess8Bit(const string &b, int qsc, int mm, int mi) {
 
 }
 
-NOINLINE int Solution4::process(const string &b, const string &a, int qsc, int qec, 
+NOINLINE int Solution4::process(const string &b, const string &a, int qsc, int qec,
                                 int mm, int mi, int o, int e, int dir,
                                 int *_opt, int *_te, int *_qe, int *_n_best) {
     string _a = a;
@@ -1147,9 +1147,9 @@ next: ;
     opt = MIN_VAL;
     lastMax = MIN_VAL;
 
-    if (qsc == 0) goto process16bit; 
+    if (qsc == 0) goto process16bit;
 
-//process8bit:        
+//process8bit:
 
 
     preprocess8Bit(b, qsc, mm, mi);
@@ -1176,7 +1176,7 @@ next: ;
     iter = -1;
 #endif
 
-process16bit:        
+process16bit:
     preprocess16Bit(b, qsc, mm, mi);
 
 go16bit:
@@ -1221,6 +1221,6 @@ similar:
     (*_te) = target_end;
     (*_qe) = query_end;
     (*_n_best) = n_best;
-    
+
     return opt;
 }
