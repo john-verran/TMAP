@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <config.h>
 
-/*! 
+/*!
   Generic Functions
   */
 
@@ -14,7 +14,7 @@
   */
 #define TMAP_VERSION_ID ('t' + 'm' + 'a' + 'p')
 
-/* 
+/*
  * File extensions
  */
 /*! d TMAP_ANNO_FILE_EXTENSION
@@ -36,9 +36,9 @@
 
 // The default compression types for each file
 // Note: the implementation relies on no compression
-#define TMAP_ANNO_COMPRESSION TMAP_FILE_NO_COMPRESSION 
-#define TMAP_PAC_COMPRESSION TMAP_FILE_NO_COMPRESSION 
-#define TMAP_BWT_COMPRESSION TMAP_FILE_NO_COMPRESSION 
+#define TMAP_ANNO_COMPRESSION TMAP_FILE_NO_COMPRESSION
+#define TMAP_PAC_COMPRESSION TMAP_FILE_NO_COMPRESSION
+#define TMAP_BWT_COMPRESSION TMAP_FILE_NO_COMPRESSION
 #define TMAP_SA_COMPRESSION TMAP_FILE_NO_COMPRESSION
 
 /*
@@ -63,9 +63,9 @@
 #define TMAP_UNLIKELY(x) (x)
 #endif
 
-/*! 
+/*!
   for each type of file, the integer id associated with this file
-  @details  can be used with 'tmap_get_file_name' 
+  @details  can be used with 'tmap_get_file_name'
   */
 enum {
     TMAP_ANNO_FILE     = 0, /*!< the reference sequence annotation file */
@@ -74,7 +74,7 @@ enum {
     TMAP_SA_FILE       = 3, /*!< the packed SA file */
 };
 
-/*! 
+/*!
 */
 enum {
     TMAP_READS_FORMAT_UNKNOWN  = -1, /*!< the reads format is unrecognized */
@@ -87,14 +87,14 @@ enum {
 
 #ifdef TMAP_BWT_32_BIT
 typedef uint32_t tmap_bwt_int_t;
-#define TMAP_BWT_INT_MAX UINT32_MAX 
+#define TMAP_BWT_INT_MAX UINT32_MAX
 typedef int32_t tmap_bwt_sint_t;
-#define TMAP_BWT_SINT_MAX INT32_MAX 
+#define TMAP_BWT_SINT_MAX INT32_MAX
 #else
 typedef uint64_t tmap_bwt_int_t;
-#define TMAP_BWT_INT_MAX UINT64_MAX 
+#define TMAP_BWT_INT_MAX UINT64_MAX
 typedef int64_t tmap_bwt_sint_t;
-#define TMAP_BWT_SINT_MAX INT64_MAX 
+#define TMAP_BWT_SINT_MAX INT64_MAX
 #endif
 
 /* For branch prediction */
@@ -136,7 +136,7 @@ typedef int64_t tmap_bwt_sint_t;
  */
 #define TMAP_1GB (1 << 30)
 
-/*! 
+/*!
   @param  algo_id  the algorithm identifier
   @return          algorithm name
   */
@@ -151,7 +151,7 @@ int32_t
 tmap_algo_name_to_id(char *name);
 
 /*! tmap_nt_char_to_int
-  @details  converts a DNA base in ASCII format to its 2-bit format [0-4]. 
+  @details  converts a DNA base in ASCII format to its 2-bit format [0-4].
   */
 extern uint8_t tmap_nt_char_to_int[256];
 
@@ -195,20 +195,20 @@ enum {
 extern const char *TMAP_SAM_RG_TAGS[TMAP_SAM_RG_NUM];
 
 
-/*! 
+/*!
   @param  c  the quality value in ASCII format
   @return    the quality value in integer format
   */
 #define CHAR2QUAL(c) ((uint8_t)c-33)
 
-/*! 
+/*!
   @param  q  the quality value in integer format
   @return    the quality value in ASCII format
   */
 #define QUAL2CHAR(q) (char)(((((unsigned char)q)<=93)?q:93)+33)
 
 #ifndef htonll
-/*! 
+/*!
   converts a 64-bit value to network order
   @param  x  the 64-bit value to convert
   @return    the converted 64-bit value
@@ -217,7 +217,7 @@ extern const char *TMAP_SAM_RG_TAGS[TMAP_SAM_RG_NUM];
 #endif
 
 #ifndef ntohll
-/*! 
+/*!
   converts a 64-bit value to host order
   @param  x  the 64-bit value to convert
   @return    the converted 64-bit value
@@ -226,10 +226,10 @@ extern const char *TMAP_SAM_RG_TAGS[TMAP_SAM_RG_NUM];
 #endif
 
 #ifndef tmap_roundup32
-/*! 
+/*!
   rounds up to the nearest power of two integer
   @param  x  the integer to round up
-  @return    the smallest integer greater than x that is a power of two 
+  @return    the smallest integer greater than x that is a power of two
   */
 #define tmap_roundup32(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
 #endif
@@ -242,35 +242,35 @@ extern const char *TMAP_SAM_RG_TAGS[TMAP_SAM_RG_NUM];
   @param  reads_format  the reads format
   @return               the sequence format (for tmap_seq_t)
   */
-int32_t 
+int32_t
 tmap_reads_format_to_seq_type(int32_t reads_format);
 
-/*! 
+/*!
   @param  v  the value to take the log 2
   @return    log of the value, base two
   */
-inline uint32_t 
+uint32_t
 tmap_log2(uint32_t v);
 
-/*! 
+/*!
   gets the name of a specific file based on the reference sequence
-  @param  prefix   the prefix of the file to be written, usually the fasta file name 
+  @param  prefix   the prefix of the file to be written, usually the fasta file name
   @param  type    the type of file based on this reference sequence
   @return         a pointer to the file name string
   */
-inline char *
+char *
 tmap_get_file_name(const char *prefix, int32_t type);
 
-/*! 
+/*!
   @param  optarg  the string of the file format
   @return         the format type
   */
-int 
+int
 tmap_get_reads_file_format_int(char *optarg);
 
-/*! 
-  checks the extension of the file to recognize its format     
-  @param  fn            the file name 
+/*!
+  checks the extension of the file to recognize its format
+  @param  fn            the file name
   @param  reads_format  pointer to the reads format, if any (unknown|fastq|fq|fasta|fa|sff)
   @param  compr_type    pointer the type of compression used, if any (none|gz|bz2)
   @details              if the reads_format is unknown, it will be populated; similarly for compr_type.
@@ -278,7 +278,7 @@ tmap_get_reads_file_format_int(char *optarg);
 void
 tmap_get_reads_file_format_from_fn_int(char *fn, int32_t *reads_format, int32_t *compr_type);
 
-/*! 
+/*!
   @param  format  the interger file format specifier
   @return         the format type (string)
   */
@@ -290,7 +290,7 @@ tmap_get_reads_file_format_string(int format);
   @param  seq  the string to reverse
   @param  len  the length of the string
   */
-inline void
+ void
 tmap_reverse(char *seq, int32_t len);
 
 /*!
@@ -298,7 +298,7 @@ tmap_reverse(char *seq, int32_t len);
   @param  seq  the string to reverse
   @param  len  the length of the string
   */
-inline void
+void
 tmap_reverse_int(uint8_t *seq, int32_t len);
 
 /*!
@@ -306,15 +306,15 @@ tmap_reverse_int(uint8_t *seq, int32_t len);
   @param  seq  the character DNA sequence
   @param  len  the length of the DNA sequence
   */
-inline void
-tmap_reverse_compliment(char *seq, int32_t len); 
+void
+tmap_reverse_compliment(char *seq, int32_t len);
 
 /*!
   reverse compliments a given string
   @param  seq  the integer DNA sequence
   @param  len  the length of the DNA sequence
   */
-inline void
+void
 tmap_reverse_compliment_int(uint8_t *seq, int32_t len);
 
 /*!
@@ -322,24 +322,24 @@ tmap_reverse_compliment_int(uint8_t *seq, int32_t len);
   @param  seq  the character DNA sequence
   @param  len  the length of the DNA sequence
   */
-inline void
-tmap_compliment(char *seq, int32_t len); 
+void
+tmap_compliment(char *seq, int32_t len);
 
 /*!
   converts a string to an integer
   @param  seq  the character DNA sequence
   @param  len  the length of the DNA sequence
   */
-inline void
-tmap_to_int(char *seq, int32_t len); 
+void
+tmap_to_int(char *seq, int32_t len);
 
 /*!
   converts a integer to string
   @param  seq  the character integer DNA sequence
   @param  len  the length of the DNA sequence
   */
-inline void
-tmap_to_char(char *seq, int32_t len); 
+void
+tmap_to_char(char *seq, int32_t len);
 
 /*!
   removes trailing whitespaces from a given string
@@ -357,7 +357,7 @@ tmap_chomp(char *str);
   @param  high2  the higher interval end
   @return        -1 if high1 < low2, 1 if high2 < low1, 0 otherwise
   */
-inline int32_t
+ int32_t
 tmap_interval_overlap(uint32_t low1, uint32_t high1, uint32_t low2, uint32_t high2);
 
 /*!
@@ -372,7 +372,7 @@ tmap_compare_versions(const char *v1, const char *v2);
 /*!
   validates the flow order
   @param  flow_order  the flow order to validate
-  @return            0 if all four bases are present in the flow order, 
+  @return            0 if all four bases are present in the flow order,
   -1 if there was an unrecognized base, and -2 if not all bases are present.
   */
 int32_t
@@ -381,7 +381,7 @@ tmap_validate_flow_order(const char *flow_order);
 /*!
   validates the key sequence
   @param  key_seq  the flow order to validate
-  @return            0 if all four bases are present in the flow order, 
+  @return            0 if all four bases are present in the flow order,
   and -1 if there was an unrecognized base.
   */
 int32_t
