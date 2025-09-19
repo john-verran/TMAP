@@ -36,11 +36,11 @@
 #include "../util/tmap_string.h"
 #include "../util/tmap_definitions.h"
 
-/*! 
+/*!
   A Library for FASTQ data
   */
 
-/*! 
+/*!
   structure for holding FASTA/FASTQ strings
   */
 typedef struct {
@@ -51,56 +51,56 @@ typedef struct {
     int32_t is_int;  /*!< 1 if the sequence is in integer format, 0 otherwise  */
 } tmap_fq_t;
 
-/*! 
+/*!
   initializes sequence read structure
-  @return     pointer to the initialized memory 
+  @return     pointer to the initialized memory
   */
-inline tmap_fq_t *
+ tmap_fq_t *
 tmap_fq_init();
 
-/*! 
+/*!
   @param  fq  a pointer to the sequence structure
   */
-inline void 
+ void
 tmap_fq_destroy(tmap_fq_t *fq);
 
-/*! 
+/*!
   clones the given sequence read structure
-  @param  fq  pointer to the sequence read structure to be copied  
-  @return     pointer to the initialized memory 
+  @param  fq  pointer to the sequence read structure to be copied
+  @return     pointer to the initialized memory
   */
-inline tmap_fq_t *
+ tmap_fq_t *
 tmap_fq_clone(tmap_fq_t *fq);
 
-/*! 
+/*!
   reverse the sequence and reverse the qualities
   @param  fq  a pointer to a sequence structure
   */
 void
 tmap_fq_reverse(tmap_fq_t *fq);
 
-/*! 
+/*!
   reverse compliments the sequence and reverse the qualities
   @param  fq  a pointer to a sequence structure
   */
 void
 tmap_fq_reverse_compliment(tmap_fq_t *fq);
 
-/*! 
-  compliments the sequence 
+/*!
+  compliments the sequence
   @param  fq  a pointer to a sequence structure
   */
 void
 tmap_fq_compliment(tmap_fq_t *fq);
 
-/*! 
+/*!
   converts bases to integer values
   @param  fq  a pointer to a sequence structure
   */
 void
 tmap_fq_to_int(tmap_fq_t *fq);
 
-/*! 
+/*!
   converts bases to character values
   @param  fq  a pointer to a sequence structure
   */
@@ -111,14 +111,14 @@ tmap_fq_to_char(tmap_fq_t *fq);
   gets the read's bases
   @param  fq  a pointer to a sequence structure
  */
-inline tmap_string_t *
+ tmap_string_t *
 tmap_fq_get_bases(tmap_fq_t *fq);
 
 /*!
   gets the read's qualities
   @param  fq  a pointer to a sequence structure
  */
-inline tmap_string_t *
+ tmap_string_t *
 tmap_fq_get_qualities(tmap_fq_t *fq);
 
 #endif

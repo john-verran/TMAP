@@ -8,13 +8,13 @@
 #include "tmap_sam.h"
 #include "../samtools/sam_header.h"
 
-/*! 
+/*!
   An Abstract Library for DNA Sequence Data
   */
 
 // TODO: we could turn this into a macro library
 
-/*! 
+/*!
   the type of DNA sequence data
   */
 enum {
@@ -25,7 +25,7 @@ enum {
     TMAP_SEQ_TYPE_BAM = 3 /*!< BAM input/output */
 };
 
-/*! 
+/*!
   */
 typedef struct {
     int8_t type;  /*!< the type associated with this structure */
@@ -43,102 +43,102 @@ typedef struct {
     int32_t flowgram_len; /*!< the flowgram length */
 } tmap_seq_t;
 
-/*! 
+/*!
   @param  type  the type associated with this structure
-  @return       pointer to the initialized memory 
+  @return       pointer to the initialized memory
   */
 tmap_seq_t *
 tmap_seq_init(int8_t type);
 
-/*! 
+/*!
   @param  seq  pointer to the structure
   */
 void
 tmap_seq_destroy(tmap_seq_t *seq);
 
-/*! 
+/*!
   @param  seq  pointer to the structure to clone
-  @return      pointer to the initialized memory 
+  @return      pointer to the initialized memory
   */
 tmap_seq_t *
 tmap_seq_clone(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure to reverse 
+/*!
+  @param  seq  pointer to the structure to reverse
   */
 void
 tmap_seq_reverse(tmap_seq_t *seq);
 
-/*! 
+/*!
   @param  seq  pointer to the structure to reverse compliment
   */
 void
 tmap_seq_reverse_compliment(tmap_seq_t *seq);
 
-/*! 
+/*!
   @param  seq  pointer to the structure to compliment
   */
 void
 tmap_seq_compliment(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure 
+/*!
+  @param  seq  pointer to the structure
   */
 void
 tmap_seq_to_int(tmap_seq_t *seq);
 
-/*! 
+/*!
   converts bases to character values
   @param  seq  a pointer to a sequence structure
   */
 void
 tmap_seq_to_char(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure 
+/*!
+  @param  seq  pointer to the structure
   return       0 if the sequence is character format, 1 otherwise
   */
 int32_t
 tmap_seq_is_int(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure 
+/*!
+  @param  seq  pointer to the structure
   @return      a pointer to the name string
   */
 tmap_string_t *
 tmap_seq_get_name(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure 
+/*!
+  @param  seq  pointer to the structure
   @return      a pointer to the base sequence string
   */
-inline tmap_string_t *
+ tmap_string_t *
 tmap_seq_get_bases(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure 
+/*!
+  @param  seq  pointer to the structure
   @return      the sequence length
   */
-inline int32_t
+ int32_t
 tmap_seq_get_bases_length(tmap_seq_t *seq);
 
-/*! 
-  @param  seq  pointer to the structure 
+/*!
+  @param  seq  pointer to the structure
   @return      a pointer to the quality string
   */
-inline tmap_string_t *
+ tmap_string_t *
 tmap_seq_get_qualities(tmap_seq_t *seq);
 
-/*! 
-  @param                   seq  pointer to the structure 
+/*!
+  @param                   seq  pointer to the structure
   @param  remove_clipping  1 if we are to remove clipped sequence, 0 otherwise
-  @return                  0 if the key sequence did not match, 1 otherwise 
+  @return                  0 if the key sequence did not match, 1 otherwise
   @details                 this will not modify the header
   */
 int32_t
 tmap_seq_remove_key_sequence(tmap_seq_t *seq, int32_t remove_clipping);
 
-/*! 
+/*!
   @param  seq  pointer to the structure to convert
   @return      a pointer to the fq structure
   */
