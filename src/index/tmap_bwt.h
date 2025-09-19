@@ -167,7 +167,7 @@ tmap_bwt_gen_hash(tmap_bwt_t *bwt, int32_t hash_width, uint32_t check_hash);
   @param  c    base in two-bit integer format
   @return      the next occurrence given the base
   */
-inline tmap_bwt_int_t 
+ tmap_bwt_int_t 
 tmap_bwt_occ(const tmap_bwt_t *bwt, tmap_bwt_int_t k, uint8_t c);
 
 /*! 
@@ -176,7 +176,7 @@ tmap_bwt_occ(const tmap_bwt_t *bwt, tmap_bwt_int_t k, uint8_t c);
   @param  k    previous occurrence
   @param  cnt  pointer to the next occurrences for all four bases
   */
-inline void 
+ void 
 tmap_bwt_occ4(const tmap_bwt_t *bwt, tmap_bwt_int_t k, tmap_bwt_int_t cnt[4]);
 
 /*! 
@@ -189,7 +189,7 @@ tmap_bwt_occ4(const tmap_bwt_t *bwt, tmap_bwt_int_t k, tmap_bwt_int_t cnt[4]);
   @param  ol   the next upper occurrence
   @details     more efficient version of bwt_occ but requires that k <= l (not checked)
   */
-inline void 
+ void 
 tmap_bwt_2occ(const tmap_bwt_t *bwt, tmap_bwt_int_t k, tmap_bwt_int_t l, uint8_t c, tmap_bwt_int_t *ok, tmap_bwt_int_t *ol);
 
 /*! 
@@ -201,7 +201,7 @@ tmap_bwt_2occ(const tmap_bwt_t *bwt, tmap_bwt_int_t k, tmap_bwt_int_t l, uint8_t
   @param  cntl  next lower occurrences
   @details      more efficient version of bwt_occ4 but requires that k <= l (not checked)
   */
-inline void 
+ void 
 tmap_bwt_2occ4(const tmap_bwt_t *bwt, tmap_bwt_int_t k, tmap_bwt_int_t l, tmap_bwt_int_t cntk[4], tmap_bwt_int_t cntl[4]);
 
 /*!

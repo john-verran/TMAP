@@ -94,7 +94,7 @@ extern __m64 tmap_bwt_aux_n_mask_64[9];
   _mm_add_si64(_mm_movepi64_pi64(t), _mm_cvtsi64x_si64(_mm_extract_epi64(t, 1)))
 
 
-static inline uint64_t 
+static inline uint64_t
 tmap_bwt_aux_occ(tmap_bwt_int_t k, __m64 x, const uint32_t *const p)
 {
   __m128i t, t2;
@@ -130,7 +130,7 @@ tmap_bwt_aux_occ(tmap_bwt_int_t k, __m64 x, const uint32_t *const p)
   return _mm_extract_epi64(t, 1) + _mm_extract_epi64(t, 0);
 }
 
-static inline tmap_bwt_int_t 
+static inline tmap_bwt_int_t
 tmap_bwt_aux_invPsi(const tmap_bwt_t *bwt, tmap_bwt_int_t isa)
 {
   if (TMAP_LIKELY(isa != bwt->primary)) {
@@ -153,7 +153,7 @@ tmap_bwt_aux_invPsi(const tmap_bwt_t *bwt, tmap_bwt_int_t isa)
   return isa;
 }
 
-tmap_bwt_int_t 
+tmap_bwt_int_t
 tmap_sa_pac_pos_aux(const tmap_sa_t *sa, const tmap_bwt_t *bwt, tmap_bwt_int_t k)
 {
   tmap_bwt_int_t mask, s = 0;
