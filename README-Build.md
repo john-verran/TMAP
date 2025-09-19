@@ -71,3 +71,15 @@ file tmap
 - `tmap` file exists and is executable
 - `file tmap` shows: `Mach-O 64-bit executable x86_64`
 - `./tmap --version` shows: `tmap: torrent mapper Version: 3.4.1`
+
+### **Step 6: Install to Local Bin Directory**
+```bash
+# Make it executable (should already be, but just in case)
+chmod +x ./tmap
+
+# Copy the binary
+cp tmap $HOME/.local/bin/
+
+# Verify installation
+tmap --version
+```
