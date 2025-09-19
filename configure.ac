@@ -37,8 +37,8 @@ AC_GNU_SOURCE
 # condition on BWT Type!
 ## 0 - Use this to use the original BWT code 
 extended_CFLAGS="-D_TMAP_BWT_RUN_TYPE=0 -D_USE_KNETFILE -Isrc/samtools -DSAMTOOLS_MAIN";
-default_CFLAGS="-Wall -g -O3 -pthread -msse3";
-default_CXXFLAGS="-Wall -g -O3 -pthread -msse3";
+default_CFLAGS="-Wall -g -O3 -pthread";
+default_CXXFLAGS="-Wall -g -O3 -pthread";
 extended_CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS"; # for <stdint.h> and <inttypes.h>
 ## 1 - Use this to use the optimized code 
 #extended_CFLAGS="-D_TMAP_BWT_RUN_TYPE=0";
